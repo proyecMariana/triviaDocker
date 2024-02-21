@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Game</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <img src="duo.png" alt="Duolingo Logo" class="logo">
+        <h1>Trivia Game</h1>
+    </div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <button onclick="checkAnswer()">Submit Answer</button>
+    <p id="result"></p>
+
+    <script>
+ var questions = [
+    {
+        question: "¿Qué comando se utiliza para ver una lista de contenedores Docker en ejecución?",
+        options: ["docker ps", "docker list", "docker containers", "docker running"],
+        answer: "docker ps"
+    },
+    {
+        question: "¿Cómo se llama el archivo que contiene las instrucciones para construir una imagen Docker?",
+        options: ["Dockerfile", "docker-compose.yml", "image.conf", "dockerbuildfile.txt"],
+        answer: "Dockerfile"
+    },
+    {
+        question: "¿Qué comando se utiliza para construir una imagen Docker desde un Dockerfile?",
+        options: ["docker build", "docker create", "docker run", "docker buildfile"],
+        answer: "docker build"
+    },
+    {
+        question: "¿Cómo se especifica el nombre de una imagen al construirla con docker build?",
+        options: ["-t", "-n", "-name", "--tag"],
+        answer: "-t"
+    },
+    {
+        question: "¿Qué comando se utiliza para ejecutar un contenedor Docker en segundo plano?",
+        options: ["docker run -d", "docker start -b", "docker start -bg", "docker exec -d"],
+        answer: "docker run -d"
+    }
+];
+
+
+        var currentQuestionIndex = 0;
+        var questionElement = document.getElementById('question');
+        var optionsElement = document.getElementById('options');
+        var resultElement = document.getElementById('result');
+        var correctAnswers = 0;
+        var incorrectAnswers = 0;
+
+        function displayQuestion() {
+            var currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            optionsElement.innerHTML = '';
+            currentQuestion.options.forEach(function(option) {
+                var button = document.createElement('button');
+                button.textContent = option;
+                button.onclick = function() {
+                    checkAnswer(option);
+                };
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            var currentQuestion = questions[currentQuestionIndex];
+            if (selectedOption === currentQuestion.answer) {
+                resultElement.textContent = 'Correcto!';
+                resultElement.style.color = 'green';
+                correctAnswers++;
+            } else {
+                resultElement.textContent = 'Incorrecto. La respuesta correcta es: ' + currentQuestion.answer;
+                resultElement.style.color = 'red';
+                incorrectAnswers++;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                resultElement.textContent = '¡Juego terminado! Respuestas correctas: ' + correctAnswers + ', Respuestas incorrectas: ' + incorrectAnswers;
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
